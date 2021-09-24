@@ -1,0 +1,27 @@
+{
+  "name": "FileBox",
+  "version": "0.1.0",
+  "summary": "A short description of FileBox.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/ijinfeng/FileBox",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "ijinfeng": "851406283@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/ijinfeng/FileBox.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "FileBox/Classes/**/*",
+  "dependencies": {
+    "SnapKit": [
+
+    ]
+  }
+}

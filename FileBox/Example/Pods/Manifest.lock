@@ -1,0 +1,23 @@
+PODS:
+  - FileBox (0.1.0):
+    - SnapKit
+  - SnapKit (4.2.0)
+
+DEPENDENCIES:
+  - FileBox (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - SnapKit
+
+EXTERNAL SOURCES:
+  FileBox:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  FileBox: c89a88a58f589472749e3578347faff951c38b3c
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+
+PODFILE CHECKSUM: a6074f0a3416ed7afa0adcb24c946e6e75774139
+
+COCOAPODS: 1.10.1
