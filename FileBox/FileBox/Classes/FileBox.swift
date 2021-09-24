@@ -28,6 +28,6 @@ public class FileBox: NSObject {
 
 extension FileBox {
     public static func sandBoxPath() -> String {
-        NSSearchPathForDirectoriesInDomains(.userDirectory, .userDomainMask, true).first ?? ""
+        Bundle.main.bundlePath
     }
 }

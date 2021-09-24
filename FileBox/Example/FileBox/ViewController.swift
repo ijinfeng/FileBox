@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         let data = "Do any additional setup after loading the view, typically from a nib.".data(using: .utf8)
         try? data!.write(to: URL(string: path! + "/string.data.txt")!)
         
-        let node = FileNode(path: path!)
+//        let node = FileNode(path: path!)
         
     }
 

@@ -31,15 +31,31 @@ public class FileNode: NSObject {
     public private(set) var nodes: [FileNode] = []
     
     convenience public init(path: String) {
-        self.init(path: path, node: .file)
+        self.init(path: path, node: .file, action: .none)
     }
     
-    convenience public init(actionNode path: String) {
-        self.init(path: path, node: .action)
+    convenience public init(actionNode path: String, action: ActionType) {
+        self.init(path: path, node: .action, action: action)
     }
     
-    private init(path: String, node: NodeType) {
+    private init(path: String, node: NodeType, action: ActionType) {
         self.path = path
+        
+        if node == .action {
+            if action == .root {
+                self.name = "."
+            } else if action == .top {
+                self.name = ".."
+            } else {
+                self.name = ""
+            }
+            self.isDir = true
+            self.type = .dir
+            self.size = 0
+            self.attribute = [:]
+            super.init()
+            return
+        }
         
         let URL = URL(string: path)
         let extname = URL?.pathExtension.lowercased() ?? ""
@@ -100,6 +116,12 @@ extension FileNode {
         case file
         case action
     }
+    
+    public enum ActionType {
+        case none
+        case root
+        case top
+    }
 }
 
 
@@ -123,6 +145,9 @@ extension FileNode {
     }
     
     func refreshNodes() -> [FileNode] {
+        if path.count == 0 {
+            return []
+        }
         if let contents = try? FileManager.default.contentsOfDirectory(atPath: path) {
             var nodes: [FileNode] = []
             for content in contents {
@@ -132,6 +157,19 @@ extension FileNode {
             return nodes
         } else {
             return []
+        }
+    }
+}
+
+
+extension String {
+    // ~/Desktop/ijinfeng/Box
+    // return ~/Desktop/ijinfeng
+    func topFilePath() -> String {
+        if let URL = URL(string: self) {
+            return URL.deletingLastPathComponent().absoluteString
+        } else {
+            return self
         }
     }
 }

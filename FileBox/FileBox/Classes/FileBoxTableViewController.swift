@@ -13,8 +13,8 @@ class FileBoxTableViewController: UITableViewController {
     
     var fileNodes: [FileNode] = []
     
-    let rootFileNode = FileNode(path: ".")
-    let topFileNode = FileNode(path: "..")
+    var rootFileNode: FileNode!
+    var topFileNode: FileNode!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,16 +23,27 @@ class FileBoxTableViewController: UITableViewController {
             fileNode = FileNode(path: FileBox.sandBoxPath())
         }
 
-        self.fileNodes = fileNode?.refreshNodes()
+        if let node = fileNode {
+            rootFileNode = FileNode(actionNode: node.path, action: .root)
+            topFileNode = FileNode(actionNode: node.path.topFilePath(), action: .top)
+        }
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .rewind, target: self, action: #selector(onClickBack))
+        self.fileNodes = fileNode?.refreshNodes() ?? []
+        
+        navigationItem.title = fileNode?.name ?? ""
+        
+        if #available(iOS 13.0, *) {
+            navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .close, target: self, action: #selector(onClickBack))
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: fileNode == nil ? "关闭" : "返回", style: .plain, target: self, action: #selector(onClickBack))
+        }
         
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .refresh, target: self, action: #selector(onRefresh))
         
-        
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         tableView.rowHeight = 40
-        tableView.register(TextCell.Type, forCellReuseIdentifier: "text")
-        tableView.register(DisplayFileCell.Type, forCellReuseIdentifier: "display")
+        tableView.register(TextCell.self, forCellReuseIdentifier: "text")
+        tableView.register(DisplayFileCell.self, forCellReuseIdentifier: "display")
     }
 
     // MARK: - Table view data source
@@ -65,6 +76,17 @@ class FileBoxTableViewController: UITableViewController {
             let fileNode = self.fileNodes[indexPath.row]
             cell.fileNode = fileNode
             return cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let fileNode = self.fileNodes[indexPath.row]
+        if fileNode.isDir {
+            let vc = FileBoxTableViewController()
+            vc.fileNode = fileNode
+            navigationController?.pushViewController(vc, animated: true)
+        } else {
+            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
 }

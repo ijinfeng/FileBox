@@ -30,23 +30,31 @@ class DisplayFileCell: UITableViewCell {
         }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(icon)
         contentView.addSubview(label)
+        
         label.snp.makeConstraints { make in
             make.left.equalTo(icon.snp_right).offset(15)
             make.centerY.equalTo(contentView)
             make.right.lessThanOrEqualTo(-12)
         }
         
-        contentView.addSubview(icon)
         icon.snp.makeConstraints { make in
             make.left.equalTo(12)
             make.centerY.equalTo(contentView)
             make.size.equalTo(CGSize(width: 30, height: 30))
         }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
