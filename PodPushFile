@@ -1,5 +1,5 @@
 #写入*.podspec所在的相对目录，不写默认会在脚本执行的目录下查找
-PUSH_DIR_PATH=
+PUSH_DIR_PATH=FileBox
 #用户还可以指定要推送的podspec文件的名字，这个存在多个podspec的时候会用到
 PUSH_PODSPEC_NAME=
 #是否允许用户自定义版本号，不填或填true将允许用户设置自定义的版本号，而不是自增版本号
