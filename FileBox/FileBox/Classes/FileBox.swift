@@ -23,9 +23,9 @@ public class FileBox: NSObject {
         }
     }
     
-    public func openRecently() {
+    public func openRecently(dir path: String = FileBox.sandBoxPath()) {
         guard let rootNode = rootNode else {
-            open()
+            open(dir: path)
             return
         }
         
