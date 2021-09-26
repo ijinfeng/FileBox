@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FileBox'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = 'A short description of FileBox.'
 
 # This description is used to generate tags and improve search results.
@@ -30,10 +30,10 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '9.0'
 
-  s.source_files = 'FileBox/Classes/**/*'
+  s.source_files = 'FileBox/FileBox/Classes/**/*'
   
    s.resource_bundles = {
-     'FileBox' => ['FileBox/Assets/**/*']
+     'FileBox' => ['FileBox/FileBox/Assets/**/*']
    }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
