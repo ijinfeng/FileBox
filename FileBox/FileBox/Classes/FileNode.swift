@@ -13,7 +13,6 @@ private let audioExt = ["pcm","wav", "aac", "mp3", "ogg"]
 
 public class FileNode: NSObject {
     
-    var head: FileNode?
     var next: FileNode?
     
     public private(set) var path: String!
@@ -176,7 +175,6 @@ extension FileNode {
         }
     }
 }
-
 
 extension String {
     // ~/Desktop/ijinfeng/Box

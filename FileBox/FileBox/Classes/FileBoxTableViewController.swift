@@ -31,14 +31,8 @@ class FileBoxTableViewController: UITableViewController {
         self.fileNodes = fileNode?.refreshNodes() ?? []
         
         navigationItem.title = fileNode?.name ?? ""
-        
-        if #available(iOS 13.0, *) {
-            navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .close, target: self, action: #selector(onClickBack))
-        } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: fileNode == nil ? "关闭" : "返回", style: .plain, target: self, action: #selector(onClickBack))
-        }
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .refresh, target: self, action: #selector(onRefresh))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.create(named: "icon_close")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onClickBack))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.create(named: "icon_refresh")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onRefresh))
         
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         tableView.register(TextCell.self, forCellReuseIdentifier: "text")
@@ -82,12 +76,17 @@ class FileBoxTableViewController: UITableViewController {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 navigationController?.popToRootViewController(animated: true)
+                FileBox.default.resetRootNode()
             } else {
                 navigationController?.popViewController(animated: true)
+                FileBox.default.removeLastNode()
             }
         } else {
             let fileNode = self.fileNodes[indexPath.row]
             if fileNode.isDir {
+                
+                FileBox.default.add(new: fileNode)
+                
                 let vc = FileBoxTableViewController()
                 vc.fileNode = fileNode
                 navigationController?.pushViewController(vc, animated: true)
@@ -108,11 +107,7 @@ class FileBoxTableViewController: UITableViewController {
 
 extension FileBoxTableViewController {
     @objc func onClickBack() {
-        if (navigationController?.viewControllers.count ?? 0) <= 1 {
-            navigationController?.dismiss(animated: true, completion: nil)
-        } else {
-            navigationController?.popViewController(animated: true)
-        }
+        navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func onRefresh() {

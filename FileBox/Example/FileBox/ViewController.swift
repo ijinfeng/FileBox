@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        FileBox.default.open()
+        FileBox.default.openRecently()
     }
 }
 

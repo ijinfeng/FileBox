@@ -11,20 +11,46 @@ public class FileBox: NSObject {
     
     public static  let `default` = FileBox()
     
-    public var currentNode: FileNode?
+    internal var rootNode: FileNode?
     
     public func open(dir path: String = FileBox.sandBoxPath()) {
         let window = UIApplication.shared.windows.first!
         if let root = window.rootViewController {
-            let vc = FileBoxTableViewController()
-            vc.fileNode = FileNode(path: path)
-            let navi = UINavigationController(rootViewController: vc)
+            let rootNode = FileNode(path: path)
+            FileBox.default.rootNode = rootNode
+            let navi = createRootFileController(node: rootNode)
             root.present(navi, animated: true, completion: nil)
         }
     }
     
     public func openRecently() {
+        guard let rootNode = rootNode else {
+            open()
+            return
+        }
         
+        let navi = createRootFileController(node: FileNode(path: rootNode.path))
+        var node: FileNode? = rootNode
+        var vcs: [UIViewController] = []
+        while node != nil {
+            let vc = FileBoxTableViewController()
+            vc.fileNode = FileNode(path: node!.path)
+            vcs.append(vc)
+            node = node?.next
+        }
+        navi.setViewControllers(vcs, animated: true)
+        
+        let window = UIApplication.shared.windows.first!
+        if let root = window.rootViewController {
+            root.present(navi, animated: true, completion: nil)
+        }
+    }
+    
+    private func createRootFileController(node: FileNode) -> UINavigationController {
+        let vc = FileBoxTableViewController()
+        vc.fileNode = node
+        let navi = UINavigationController(rootViewController: vc)
+        return navi
     }
 }
 
@@ -51,5 +77,30 @@ extension FileBox {
     
     public static func tempPath() -> String {
         NSTemporaryDirectory()
+    }
+}
+
+
+extension FileBox {
+    func add(new node: FileNode) {
+        var _node = FileBox.default.rootNode
+        while _node?.next != nil {
+            _node = _node?.next
+        }
+        _node?.next = node
+    }
+    
+    func removeLastNode() {
+        var _node = FileBox.default.rootNode
+        while _node?.next?.next != nil {
+            _node = _node?.next
+        }
+        if _node?.next != nil {
+            _node?.next = nil
+        }
+    }
+    
+    func resetRootNode() {
+        FileBox.default.rootNode?.next = nil
     }
 }
