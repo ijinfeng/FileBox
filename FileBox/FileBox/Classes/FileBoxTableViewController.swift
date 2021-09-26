@@ -41,7 +41,6 @@ class FileBoxTableViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .refresh, target: self, action: #selector(onRefresh))
         
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        tableView.rowHeight = 40
         tableView.register(TextCell.self, forCellReuseIdentifier: "text")
         tableView.register(DisplayFileCell.self, forCellReuseIdentifier: "display")
     }
@@ -80,13 +79,29 @@ class FileBoxTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let fileNode = self.fileNodes[indexPath.row]
-        if fileNode.isDir {
-            let vc = FileBoxTableViewController()
-            vc.fileNode = fileNode
-            navigationController?.pushViewController(vc, animated: true)
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                navigationController?.popToRootViewController(animated: true)
+            } else {
+                navigationController?.popViewController(animated: true)
+            }
         } else {
-            tableView.deselectRow(at: indexPath, animated: true)
+            let fileNode = self.fileNodes[indexPath.row]
+            if fileNode.isDir {
+                let vc = FileBoxTableViewController()
+                vc.fileNode = fileNode
+                navigationController?.pushViewController(vc, animated: true)
+            } else {
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 40
+        } else {
+            return 60
         }
     }
 }

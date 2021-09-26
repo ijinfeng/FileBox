@@ -24,9 +24,27 @@ class DisplayFileCell: UITableViewCell {
         return l
     }()
     
+    private let subLabel: UILabel = {
+        let l = UILabel()
+         l.textColor = .lightGray
+         l.font = .systemFont(ofSize: 14)
+         return l
+    }()
+    
+    private let rightArrow: UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage.create(named: "icon_right_arrow")
+         img.backgroundColor = .clear
+         img.contentMode = .scaleAspectFit
+         return img
+    }()
+    
     var fileNode: FileNode? {
         didSet {
             label.text = fileNode?.name
+            icon.image = fileNode?.getShowIcon()
+            subLabel.text = fileNode?.fileSize()
+            rightArrow.isHidden = !(fileNode?.isDir ?? false)
         }
     }
     
@@ -34,17 +52,29 @@ class DisplayFileCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(icon)
         contentView.addSubview(label)
+        contentView.addSubview(subLabel)
+        contentView.addSubview(rightArrow)
         
         label.snp.makeConstraints { make in
             make.left.equalTo(icon.snp_right).offset(15)
-            make.centerY.equalTo(contentView)
-            make.right.lessThanOrEqualTo(-12)
+            make.centerY.equalTo(icon)
+            make.right.lessThanOrEqualTo(-50)
         }
         
         icon.snp.makeConstraints { make in
             make.left.equalTo(12)
+            make.top.equalTo(4)
+            make.size.equalTo(CGSize(width: 32, height: 32))
+        }
+        subLabel.snp.makeConstraints { make in
+            make.left.equalTo(label)
+            make.right.lessThanOrEqualTo(contentView).offset(-50)
+            make.top.equalTo(label.snp_bottom).offset(5)
+        }
+        rightArrow.snp.makeConstraints { make in
             make.centerY.equalTo(contentView)
-            make.size.equalTo(CGSize(width: 30, height: 30))
+            make.size.equalTo(CGSize(width: 16, height: 16))
+            make.right.equalTo(-12)
         }
     }
     

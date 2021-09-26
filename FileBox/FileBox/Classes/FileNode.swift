@@ -151,12 +151,28 @@ extension FileNode {
         if let contents = try? FileManager.default.contentsOfDirectory(atPath: path) {
             var nodes: [FileNode] = []
             for content in contents {
-                let node = FileNode(path: content)
+                let fullPath = "\(path!)/\(content)"
+                let node = FileNode(path: fullPath)
                 nodes.append(node)
             }
             return nodes
         } else {
             return []
+        }
+    }
+    
+    func getShowIcon() -> UIImage? {
+        switch self.type {
+        case .dir:
+            return UIImage.create(named: "icon_dir")
+        case .image:
+            return UIImage.create(named: "icon_image")
+        case .video:
+            return UIImage.create(named: "icon_video")
+        case .audio:
+            return UIImage.create(named: "icon_audio")
+        default:
+            return UIImage.create(named: "icon_file")
         }
     }
 }
@@ -171,5 +187,18 @@ extension String {
         } else {
             return self
         }
+    }
+}
+
+extension UIImage {
+    static func create(named: String) -> UIImage? {
+        let anyClass = FileBox.self
+        let boxBundle = Bundle.init(for: anyClass)
+        let targetBundle = Bundle.init(path: boxBundle.path(forResource: "FileBox", ofType: "bundle") ?? "")
+        var image: UIImage? = targetBundle == nil ? nil : UIImage.init(named: named, in: targetBundle!, compatibleWith: nil)
+        if image == nil {
+            image = UIImage(named: named)
+        }
+        return image
     }
 }
