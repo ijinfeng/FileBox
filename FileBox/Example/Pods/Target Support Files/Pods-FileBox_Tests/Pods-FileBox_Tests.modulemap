@@ -1,0 +1,6 @@
+framework module Pods_FileBox_Tests {
+  umbrella header "Pods-FileBox_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
