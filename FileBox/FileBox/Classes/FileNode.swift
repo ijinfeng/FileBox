@@ -174,6 +174,26 @@ extension FileNode {
             return UIImage.create(named: "icon_file")
         }
     }
+    
+    func isWritable() -> Bool {
+        FileManager.default.isWritableFile(atPath: self.path)
+    }
+    
+    func isReadable() -> Bool {
+        FileManager.default.isReadableFile(atPath: self.path)
+    }
+    
+    func isExecutable() -> Bool {
+        FileManager.default.isExecutableFile(atPath: self.path)
+    }
+    
+    func isDeletable() -> Bool {
+        FileManager.default.isDeletableFile(atPath: self.path)
+    }
+    
+    func createDate() -> Date? {
+        attribute[FileAttributeKey.creationDate] as? Date
+    }
 }
 
 extension String {

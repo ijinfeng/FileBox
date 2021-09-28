@@ -17,6 +17,13 @@ class DisplayFileCell: UITableViewCell {
         return img
     }()
     
+    private let fileAbleLabel: UILabel = {
+        let l = UILabel()
+         l.textColor = .lightGray
+         l.font = .systemFont(ofSize: 11)
+         return l
+    }()
+    
     private let label: UILabel = {
        let l = UILabel()
         l.textColor = .black
@@ -25,6 +32,13 @@ class DisplayFileCell: UITableViewCell {
     }()
     
     private let subLabel: UILabel = {
+        let l = UILabel()
+         l.textColor = .lightGray
+         l.font = .systemFont(ofSize: 14)
+         return l
+    }()
+    
+    private let createLabel: UILabel = {
         let l = UILabel()
          l.textColor = .lightGray
          l.font = .systemFont(ofSize: 14)
@@ -41,10 +55,31 @@ class DisplayFileCell: UITableViewCell {
     
     var fileNode: FileNode? {
         didSet {
-            label.text = fileNode?.name
-            icon.image = fileNode?.getShowIcon()
-            subLabel.text = fileNode?.fileSize()
-            rightArrow.isHidden = !(fileNode?.isDir ?? false)
+            guard let fileNode = fileNode else {
+                return
+            }
+            label.text = fileNode.name
+            icon.image = fileNode.getShowIcon()
+            subLabel.text = fileNode.fileSize()
+            rightArrow.isHidden = !fileNode.isDir
+            fileAbleLabel.isHidden = fileNode.isDir
+            var ableText = ""
+            ableText.append(fileNode.isReadable() ? "r" : "*")
+            ableText.append("|")
+            ableText.append(fileNode.isWritable() ? "w" : "*")
+            ableText.append("|")
+            ableText.append(fileNode.isExecutable() ? "x" : "*")
+            ableText.append("|")
+            ableText.append(fileNode.isDeletable() ? "d" : "*")
+            fileAbleLabel.text = ableText
+            createLabel.isHidden = fileNode.isDir
+            if let date = fileNode.createDate() {
+                let dateFormat = DateFormatter()
+                dateFormat.dateFormat = "yyyy/MM/dd/HH/mm/ss"
+                createLabel.text = dateFormat.string(from: date)
+            } else {
+                createLabel.text = ""
+            }
         }
     }
     
@@ -54,6 +89,8 @@ class DisplayFileCell: UITableViewCell {
         contentView.addSubview(label)
         contentView.addSubview(subLabel)
         contentView.addSubview(rightArrow)
+        contentView.addSubview(fileAbleLabel)
+        contentView.addSubview(createLabel)
         
         label.snp.makeConstraints { make in
             make.left.equalTo(icon.snp_right).offset(15)
@@ -66,6 +103,11 @@ class DisplayFileCell: UITableViewCell {
             make.top.equalTo(4)
             make.size.equalTo(CGSize(width: 32, height: 32))
         }
+        fileAbleLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(icon)
+            make.top.equalTo(icon.snp_bottom).offset(5)
+        }
+        
         subLabel.snp.makeConstraints { make in
             make.left.equalTo(label)
             make.right.lessThanOrEqualTo(contentView).offset(-50)
@@ -75,6 +117,10 @@ class DisplayFileCell: UITableViewCell {
             make.centerY.equalTo(contentView)
             make.size.equalTo(CGSize(width: 16, height: 16))
             make.right.equalTo(-12)
+        }
+        createLabel.snp.makeConstraints { make in
+            make.right.equalTo(-50)
+            make.centerY.equalTo(subLabel)
         }
     }
     

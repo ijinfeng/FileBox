@@ -38,7 +38,10 @@ class FileBoxTableViewController: UITableViewController {
         
         navigationItem.title = fileNode?.name ?? ""
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.create(named: "icon_close")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onClickBack))
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.create(named: "icon_refresh")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onRefresh))
+        let refreshItem = UIBarButtonItem.init(image: UIImage.create(named: "icon_refresh")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onClickRefresh))
+        let deleteItem = UIBarButtonItem.init(image: UIImage.create(named: "icon_delete")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onClickDelete))
+        navigationItem.rightBarButtonItems = [refreshItem, deleteItem]
+        
         
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         tableView.register(TextCell.self, forCellReuseIdentifier: "text")
@@ -162,6 +165,37 @@ class FileBoxTableViewController: UITableViewController {
         }
         return nil
     }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return false
+        }
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        .delete
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        let fileNode = fileNodes[indexPath.row]
+        if fileNode.isDeletable() {
+           return "删除"
+        }
+        return "无权限删除"
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let fileNode = fileNodes[indexPath.row]
+        guard fileNode.isDeletable() else {
+            return
+        }
+        do {
+            try FileManager.default.removeItem(at: URL(fileURLWithPath: fileNode.path))
+            fileNodes.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .none)
+        } catch {}
+    }
 }
 
 extension FileBoxTableViewController {
@@ -169,12 +203,32 @@ extension FileBoxTableViewController {
         navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    @objc func onRefresh() {
+    @objc func onClickRefresh() {
         guard let node = fileNode else {
             return
         }
         self.fileNodes = node.refreshNodes()
         self.tableView.reloadData()
+    }
+    
+    @objc func onClickDelete() {
+        if fileNodes.count == 0 {
+            return
+        }
+        
+        let alert = UIAlertController(title: "清空操作", message: "即将删除当前目录下的所有文件和文件夹", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "取消", style: .cancel) {_ in }
+        let sure = UIAlertAction(title: "删除", style: .destructive) { _ in
+            let fileManager = FileManager.default
+            for fileNode in self.fileNodes {
+               try? fileManager.removeItem(at: URL(fileURLWithPath: fileNode.path))
+            }
+            self.fileNodes = self.fileNode?.refreshNodes() ?? []
+            self.tableView.reloadData()
+        }
+        alert.addAction(cancel)
+        alert.addAction(sure)
+        present(alert, animated: true, completion: nil)
     }
 }
 
