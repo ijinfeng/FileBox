@@ -75,7 +75,7 @@ class DisplayFileCell: UITableViewCell {
             createLabel.isHidden = fileNode.isDir
             if let date = fileNode.createDate() {
                 let dateFormat = DateFormatter()
-                dateFormat.dateFormat = "yyyy/MM/dd/HH/mm/ss"
+                dateFormat.dateFormat = "yyyy.MM.dd HH:mm:ss"
                 createLabel.text = dateFormat.string(from: date)
             } else {
                 createLabel.text = ""
