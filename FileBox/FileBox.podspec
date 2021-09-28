@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FileBox'
-  s.version          = '0.3.0'
+  s.version          = '0.3.1'
   s.summary          = ' iOS 快捷文件目录，支持快速查看文件信息，能加载音视频、图片、PDF文件等'
 
 # This description is used to generate tags and improve search results.
