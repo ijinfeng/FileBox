@@ -65,11 +65,11 @@ class DisplayFileCell: UITableViewCell {
             fileAbleLabel.isHidden = fileNode.isDir
             var ableText = ""
             ableText.append(fileNode.isReadable() ? "r" : "*")
-            ableText.append("|")
+            ableText.append("/")
             ableText.append(fileNode.isWritable() ? "w" : "*")
-            ableText.append("|")
+            ableText.append("/")
             ableText.append(fileNode.isExecutable() ? "x" : "*")
-            ableText.append("|")
+            ableText.append("/")
             ableText.append(fileNode.isDeletable() ? "d" : "*")
             fileAbleLabel.text = ableText
             createLabel.isHidden = fileNode.isDir
@@ -105,7 +105,7 @@ class DisplayFileCell: UITableViewCell {
         }
         fileAbleLabel.snp.makeConstraints { make in
             make.centerX.equalTo(icon)
-            make.top.equalTo(icon.snp_bottom).offset(5)
+            make.top.equalTo(icon.snp_bottom).offset(3)
         }
         
         subLabel.snp.makeConstraints { make in
