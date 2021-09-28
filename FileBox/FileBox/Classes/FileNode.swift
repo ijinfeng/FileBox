@@ -42,7 +42,7 @@ public class FileNode: NSObject {
         
         if node == .action {
             if action == .root {
-                self.name = "."
+                self.name = "/"
             } else if action == .top {
                 self.name = ".."
             } else {

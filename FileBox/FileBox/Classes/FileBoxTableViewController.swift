@@ -20,6 +20,8 @@ class FileBoxTableViewController: UITableViewController {
     
     private var clickFileNode: FileNode?
     
+    private var numLabel: UILabel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -121,6 +123,44 @@ class FileBoxTableViewController: UITableViewController {
         } else {
             return 60
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 20
+        }
+        return 0
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            var header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
+            if header == nil {
+                header = UITableViewHeaderFooterView.init(reuseIdentifier: "header")
+                header?.contentView.backgroundColor = .clear
+                
+                let numLabel = UILabel()
+                self.numLabel = numLabel
+                numLabel.font = UIFont.systemFont(ofSize: 10)
+                numLabel.textColor = .black
+                header?.contentView.addSubview(numLabel)
+                numLabel.snp.makeConstraints { make in
+                    make.center.equalTo(header!.contentView)
+                }
+            }
+            var fileCount = 0
+            var dirCount = 0
+            for fileNode in fileNodes {
+                if fileNode.isDir {
+                    dirCount += 1
+                } else {
+                    fileCount += 1
+                }
+            }
+            numLabel?.text = "files \(fileCount) | directorys \(dirCount)"
+            return header
+        }
+        return nil
     }
 }
 

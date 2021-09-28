@@ -40,7 +40,7 @@ class ViewController: UIViewController {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        FileBox.default.openRecently(dir: FileBox.cachePath())
+        FileBox.default.openRecently(dir: FileBox.sandBoxPath())
     }
 }
 

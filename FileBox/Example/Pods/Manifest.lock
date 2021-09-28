@@ -1,5 +1,5 @@
 PODS:
-  - FileBox (0.1.0):
+  - FileBox (0.2.0):
     - SnapKit
   - SnapKit (4.2.0)
 
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FileBox: adb01d266fb21b908cab5eb06d20e7140f20ec5b
+  FileBox: cfc4b3978fdc730328485d4f9b20077e30b266af
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
 
 PODFILE CHECKSUM: a6074f0a3416ed7afa0adcb24c946e6e75774139

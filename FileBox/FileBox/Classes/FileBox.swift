@@ -82,7 +82,7 @@ extension FileBox {
 
 
 extension FileBox {
-    private func add(new node: FileNode) {
+    func add(new node: FileNode) {
         var _node = FileBox.default.rootNode
         while _node?.next != nil {
             _node = _node?.next
@@ -90,7 +90,7 @@ extension FileBox {
         _node?.next = node
     }
     
-    private func removeLastNode() {
+    func removeLastNode() {
         var _node = FileBox.default.rootNode
         while _node?.next?.next != nil {
             _node = _node?.next
@@ -100,7 +100,7 @@ extension FileBox {
         }
     }
     
-    private func resetRootNode() {
+    func resetRootNode() {
         FileBox.default.rootNode?.next = nil
     }
 }
