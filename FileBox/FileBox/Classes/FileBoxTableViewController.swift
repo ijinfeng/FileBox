@@ -173,7 +173,7 @@ class FileBoxTableViewController: UITableViewController {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .delete
     }
     
@@ -185,7 +185,7 @@ class FileBoxTableViewController: UITableViewController {
         return "无权限删除"
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let fileNode = fileNodes[indexPath.row]
         guard fileNode.isDeletable() else {
             return
