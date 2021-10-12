@@ -8,7 +8,7 @@
 import UIKit
 
 private let imageExt = ["jpg", "jpeg", "png", "webp"]
-private let videoExt = ["mov", "avi", "mpg", "vob", "mkv", "rm", "rmvb", "mp4"]
+private let videoExt = ["mov", "avi", "mpg", "vob", "mkv", "rm", "rmvb", "mp4", "m4v"]
 private let audioExt = ["pcm","wav", "aac", "mp3", "ogg"]
 
 public class FileNode: NSObject {

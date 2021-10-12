@@ -35,7 +35,6 @@ class FileBoxTableViewController: UITableViewController {
         }
         
         self.fileNodes = fileNode?.refreshNodes() ?? []
-        
         navigationItem.title = fileNode?.name ?? ""
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.create(named: "icon_close")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onClickBack))
         let refreshItem = UIBarButtonItem.init(image: UIImage.create(named: "icon_refresh")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onClickRefresh))
